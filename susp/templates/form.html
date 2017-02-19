@@ -1,0 +1,55 @@
+{% extends "layout.html" %} {% block title %} {% if new %} Super Sprinter 3000 - Add new Story {% else %} Super Sprinter
+3000 - Edit Story {% endif %} {% endblock %} {% block headblock %}{% if new %} Super Sprinter 3000 - Add new Story {% else
+%} Super Sprinter 3000 - Edit Story {% endif %}{% endblock %} {% block body %} {% if session.logged_in %}{% if new %}
+<form action="{{ url_for('add_entry') }}" method=post class=add-entry>
+    <dl>
+        <dt>Story Title:</dt>
+        <dd><input type=text size=30 name=storytitle></dd>
+        <dt>User Story:</dt>
+        <dd><textarea name=userstory rows=5 cols=40></textarea></dd>
+        <dt>Accepting Criteria:</dt>
+        <dd><textarea name=acceptingcriteria rows=5 cols=40></textarea></dd>
+        <dt>Business Value:</dt>
+        <dd><input type=text size=10 name=businessvalue></dd>
+        <dt>Estimation(h):</dt>
+        <dd><input type=text size=10 name=estimation></dd>
+        <dt>Status:</dt>
+        <dd><select name="status">
+            <option value="Planing">Planing</option>
+            <option value="To Do">To Do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="In Review">In Review</option>
+            <option value="Done">Done</option>
+            </select></dd>
+        <br>
+        <div align="right"><input type=submit value=Create></div>
+</form>
+{% else %}
+<form action="{{ url_for('add_entry') }}" method=post class=modify-entry>
+    <dl>
+        <dt>Story Title:</dt>
+        <dd><input type=text size=30 name=storytitle placeholder="{{ entry.story_title }}"></dd>
+        <dt>User Story:</dt>
+        <dd><textarea name=userstory rows=5 cols=40 placeholder="{{ entry.user_story }}"></textarea></dd>
+        <dt>Accepting Criteria:</dt>
+        <dd>
+            <textarea name=acceptingcriteria rows=5 cols=40 placeholder="{{ entry.accepting_criteria }}"></textarea></dd>
+        <dt>Business Value:</dt>
+        <dd>
+            <input type=text size=10 name=businessvalue placeholder="{{ entry.business_value }}"></dd>
+        <dt>Estimation(h):</dt>
+        <dd>
+            <input type=text size=10 name=estimation placeholder="{{ entry.estimation }}"></dd>
+        <dt>Status:</dt>
+        <dd><select name="status" placeholder="{{ entry.status }}">
+            <option value="Planing">Planing</option>
+            <option value="To Do">To Do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="In Review">In Review</option>
+            <option value="Done">Done</option>
+            </select></dd>
+        <br>
+        <div align="right"><input type=submit value=Update></div>
+    </dl>
+</form>
+{% endif %}{% endif %} {% endblock %}

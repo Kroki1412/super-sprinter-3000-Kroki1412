@@ -1,4 +1,4 @@
-from flaskr.connectdatabase import ConnectDatabase
+from susp.connectdatabase import ConnectDatabase
 from peewee import *
 
 
@@ -8,7 +8,7 @@ class Entries(Model):
     accepting_criteria = TextField()
     business_value = IntegerField()
     estimation = DecimalField()
-    Status = CharField()
+    status = CharField()
 
     class Meta:
         database = ConnectDatabase.db
