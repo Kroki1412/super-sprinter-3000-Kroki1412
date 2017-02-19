@@ -83,6 +83,12 @@ def show_editor():
 def add_entry():
     if not session.get('logged_in'):
         abort(401)
+    if business_value(request.form['businessvalue']) is False:
+        flash('Busniss value must be between 100 an 1500 and devidable by 100.')
+        return show_editor()
+    if estimation_value(request.form['estimation']) is False:
+        flash('The estimation must be between 0.5 and 40 and devidable by 0.5.')
+        return show_editor()
     new_entry = Entries.create(story_title=request.form['storytitle'],
                                user_story=request.form['userstory'],
                                accepting_criteria=request.form['acceptingcriteria'],
@@ -99,6 +105,12 @@ def add_entry():
 def update_entry(user_id):
     if not session.get('logged_in'):
         abort(401)
+    if business_value(request.form['businessvalue']) is False:
+        flash('Busniss value must be between 100 an 1500 and devidable by 100.')
+        return show_editor()
+    if estimation_value(request.form['estimation']) is False:
+        flash('The estimation must be between 0.5 and 40 and devidable by 0.5.')
+        return show_editor()
     update_entry = Entries.update(story_title=request.form['storytitle'],
                                   user_story=request.form['userstory'],
                                   accepting_criteria=request.form['acceptingcriteria'],
@@ -144,10 +156,28 @@ def logout():
     return redirect(url_for('show_entries'))
 
 
-# this part handels the editing of the page
-#@app.route('/edit', methods=['GET', 'UPDATE'])
-# def listing():
-#   return "lol"
+def business_value(bvalue):
+    bvalue = int(bvalue)
+    if bvalue < 100:
+        return False
+    if bvalue > 1500:
+        return False
+    if bvalue % 100 == 0:
+        return True
+    else:
+        return False
+
+
+def estimation_value(evalue):
+    evalue = float(evalue)
+    if evalue < 0.5:
+        return False
+    if evalue > 40:
+        return False
+    if evalue % 0.5 == 0:
+        return True
+    else:
+        return False
 
 # if __name__ == "__main__":
 #    app.run()
