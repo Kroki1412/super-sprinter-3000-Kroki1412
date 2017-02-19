@@ -12,9 +12,9 @@
     <div class=flash>{{ message }}</div>
     {% endfor %} {% if session.logged_in %}
     <div class=navi align="center">
-        <td><a href="/story"><button type="button">Creat New Entry</button></a></td>
+        <td><a href="/story"><button id=newEntry type="button">Creat New Entry</button></a></td>
         &emsp;
-        <td><a href="/list"><button type="button">List All Entrys</button></a></td>
+        <td><a href="/list"><button id=listEntry type="button">List All Entrys</button></a></td>
     </div>
     {% endif %} {% block body %}{% endblock %}
 </div>
