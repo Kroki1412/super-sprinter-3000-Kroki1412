@@ -54,12 +54,20 @@ def show_entries():
     return render_template('list.html', entries=entries)
 
 
+# this lists the entries. it basicly redirects to the root. XD
+@app.route('/list')
+def show_list():
+    return show_entries()
+
+
 # Editor page
 @app.route('/story/<int:user_id>')
 def show_story(user_id):
     entry = Entries.select().where(Entries.id == user_id)
     if entry.where(Entries.id == user_id).exists():
-        return render_template('form.html', new=False, entry=entry)
+        # I have no clue why this is needed but else the data is not avaliable.
+        entry2 = Entries.get(Entries.id == user_id)
+        return render_template('form.html', new=False, entry=entry2)
     else:
         return show_entries()
 
@@ -86,6 +94,30 @@ def add_entry():
     return redirect(url_for('show_entries'))
 
 
+# this updates an entry
+@app.route('/update/<int:user_id>', methods=['POST'])
+def update_entry(user_id):
+    if not session.get('logged_in'):
+        abort(401)
+    update_entry = Entries.update(story_title=request.form['storytitle'],
+                                  user_story=request.form['userstory'],
+                                  accepting_criteria=request.form['acceptingcriteria'],
+                                  business_value=request.form['businessvalue'],
+                                  estimation=request.form['estimation'],
+                                  status=request.form['status']).where(Entries.id == user_id)
+    update_entry.execute()
+    flash('Entry was successfully edited')
+    return show_entries()
+
+
+# Delete entry
+@app.route('/delete/<int:user_id>')
+def delete_entry(user_id):
+    entry = Entries.get(Entries.id == user_id)
+    entry.delete_instance()
+    return show_entries()
+
+
 # this part will log in the user
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -110,11 +142,6 @@ def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('show_entries'))
-
-
-@app.route('/list')
-def show_list():
-    return show_entries()
 
 
 # this part handels the editing of the page

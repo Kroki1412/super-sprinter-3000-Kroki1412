@@ -1,7 +1,7 @@
-{% extends "layout.html" %} {% block title %} Super Sprinter 3000 {% endblock %} {% block body %} {% if session.logged_in
-%}{% block headblock %}Super Sprinter 3000{% endblock %}
+{% extends "layout.html" %} {% block title %} Super Sprinter 3000 {% endblock %} {% block headblock %}Super Sprinter 3000{%
+endblock %} {% block body %} {% if session.logged_in %}
 <ul class=entries>
-
+    <br>
     <table style="width:100%">
         <tr>
             <th>Story Title</th>
@@ -20,8 +20,8 @@
             <td>{{ entry.business_value }}</td>
             <td>{{ entry.estimation }}</td>
             <td>{{ entry.status }}</td>
-            <td><a href="/story/{{ entry.id }}"><button type="button">&#9998;</button></td>
-            <td><button type="button" onclick="alert('Hello World!')">&#x1F5D1;</button></td>
+            <td><a href="/story/{{ entry.id }}"><button id=penButton type="button">&#9998;</button></a></td>
+            <td><a href="/delete/{{ entry.id }}"><button id=trashButton type="button">&#x1F5D1;</button></a></td>
             <tr>
                 {% else %}
                 <li><em>Unbelievable.  No entries here so far</em> {% endfor %}
