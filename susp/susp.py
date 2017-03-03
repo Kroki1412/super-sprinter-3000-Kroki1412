@@ -83,21 +83,18 @@ def show_editor():
 def add_entry():
     if not session.get('logged_in'):
         abort(401)
-    if business_value(request.form['businessvalue']) is False:
-        flash('Busniss value must be between 100 an 1500 and devidable by 100.')
-        return show_editor()
-    if estimation_value(request.form['estimation']) is False:
-        flash('The estimation must be between 0.5 and 40 and devidable by 0.5.')
-        return show_editor()
     new_entry = Entries.create(story_title=request.form['storytitle'],
                                user_story=request.form['userstory'],
                                accepting_criteria=request.form['acceptingcriteria'],
                                business_value=request.form['businessvalue'],
                                estimation=request.form['estimation'],
                                status=request.form['status'])
-    new_entry.save()
-    flash('New entry was successfully posted')
-    return redirect(url_for('show_entries'))
+    if value_chek(new_entry.business_value, new_entry.estimation) is True:
+        new_entry.save()
+        flash('New entry was successfully posted')
+        return redirect(url_for('show_entries'))
+    else:
+        return render_template('form.html', new=False, entry=new_entry)
 
 
 # this updates an entry
@@ -154,6 +151,17 @@ def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('show_entries'))
+
+
+def value_chek(bvalue, evalue):
+    if business_value(bvalue) is False:
+        flash('Busniss value must be between 100 an 1500 and devidable by 100.')
+        return False
+    if estimation_value(evalue) is False:
+        flash('The estimation must be between 0.5 and 40 and devidable by 0.5.')
+        return False
+    else:
+        return True
 
 
 def business_value(bvalue):
